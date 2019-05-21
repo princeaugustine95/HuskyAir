@@ -19,6 +19,7 @@ namespace Husky_Air
                 SqlConnection conn = new SqlConnection(ConfigurationManager.ConnectionStrings["HuskyAirConnectionString"].ConnectionString);
                 conn.Open();
                 string query = "Select count(*) from Aircraft1 where id='"+ TextBox3.Text+"'";
+                //To ensure only aircraft with unique id get stored in the database 
                 SqlCommand comm = new SqlCommand(query,conn);
                 int temp = Convert.ToInt32(comm.ExecuteScalar().ToString());
                 if(temp==1)

@@ -19,6 +19,7 @@
     </style>
 </head>
 <body>
+    <center><h1>Hospital Registration</h1></center>
     <form id="form1" runat="server">
         <div>
             <table class="auto-style1">

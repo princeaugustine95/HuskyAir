@@ -4,27 +4,50 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title></title>
-    <style type="text/css">
-        .auto-style1 {
-            width: 100%;
-        }
-        .auto-style2 {
-            width: 781px;
-            text-align: right;
-        }
-        .auto-style3 {
-            width: 781px;
-            height: 26px;
-            text-align: right;
-        }
-        .auto-style4 {
-            height: 26px;
-        }
-    </style>
+    <title>Registration </title>
+   <style>
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: #111;
+}
+
+.active {
+  background-color: #4CAF50;
+}
+</style>
 </head>
 <body>
-    <center><h1>Doctor Registration</h1></center>
+
+
+    
+     <ul>
+   <li><a href="Index.aspx">Home</a></li>
+     <li> <a href="Stats.aspx">Flight Stats</a></li>
+     
+     
+    </ul>
+
+
+    <h1>Doctor Registration</h1>
     <form id="form1" runat="server">
         <div>
         </div>
@@ -75,12 +98,14 @@
                 <td class="auto-style2">Speciality</td>
                 <td>
                     <asp:TextBox ID="TextBox4" runat="server"></asp:TextBox>
+                    <asp:Label ID="Label1" runat="server" Text="princeaugustine95@gmail.com" Visible="False"></asp:Label>
                 </td>
             </tr>
             <tr>
                 <td class="auto-style2">Address Line1</td>
                 <td>
                     <asp:TextBox ID="TextBox5" runat="server"></asp:TextBox>
+                    <asp:Label ID="Label2" runat="server" Text="96prince@96" Visible="False"></asp:Label>
                 </td>
             </tr>
             <tr>
@@ -143,6 +168,6 @@
             </tr>
         </table>
     </form>
-    <center><a href="DoctorLogin.aspx"></a></center>
+    <center><a href="DoctorLogin.aspx">Click here to Login</a></center>
 </body>
 </html>

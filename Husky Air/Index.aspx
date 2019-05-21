@@ -116,22 +116,25 @@ body {margin:0;font-family:Arial}
 <body style="background-image: url('http://localhost:60443/Image/Husky Air.jpg'); background-attachment: scroll">
   <div class="topnav" id="myTopnav">
   <a href="#home" class="active">Home</a>
+      <a href="#about">About</a>
   <a href="#news">News</a>
   <a href="#contact">Contact</a>
+      <a href="UserStats.aspx">Flight Stats</a>
   <div class="dropdown">
     <button class="dropbtn">Departments
       <i class="fa fa-caret-down"></i>
     </button>
     <div class="dropdown-content">
       <a href="Pilot.aspx">Pilot</a>
-      <a href="Aircraft.aspx">Aircraft</a>
+      <a href="AircraftViewUser.aspx">Aircraft</a>
       <a href="Cargo.aspx">Cargo</a>
-      <a href="Hospital.aspx">Hospital</a>
+      <a href="HospitalView.aspx">Hospital</a>
        <a href="Patient.aspx">Patient</a>
     <a href="Doctor.aspx">Doctor</a>
+    
     </div>
   </div> 
-  <a href="#about">About</a>
+  
   <a href="Services.aspx">Request Service</a>
   <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
 </div>

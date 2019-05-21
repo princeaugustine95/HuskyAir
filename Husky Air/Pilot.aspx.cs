@@ -7,9 +7,12 @@ using System.Web.UI.WebControls;
 using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
+using System.Net;
+using System.Net.Mail;
 
 using System.Security.Cryptography;
 using System.Text;
+using System.IO;
 
 namespace Husky_Air
 {
@@ -21,7 +24,7 @@ namespace Husky_Air
             {
                 LoadYears();
                 LoadMonths();
-                Calendar1.Visible = false;
+               
             }
             else
             {
@@ -56,6 +59,20 @@ namespace Husky_Air
             DropDownList2.DataTextField = "Number";
             DropDownList2.DataValueField = "Number";
             DropDownList2.DataBind();
+        }
+
+        private string CreateBody()
+        {
+            string body = string.Empty;
+            using (StreamReader reader = new StreamReader(Server.MapPath("~/EmailTemplate.html")))
+            {
+                body = reader.ReadToEnd();
+            }
+            body = body.Replace("{Username}",TextBox1.Text);
+            body = body.Replace("{Password}",TextBox9.Text);
+            body = body.Replace("{User}", TextBox2.Text);
+            return body;
+
         }
 
         protected void Button1_Click(object sender, EventArgs e)
@@ -113,7 +130,8 @@ namespace Husky_Air
             else
             {
                 con.Open();
-                string query = "Insert into Pilot(Emailid,Name,Gender,Dob,Address,Phoneno,Hrs,Certification,Rating,Passowrd)values(@Emailid,@Name,@Gender,@Dob,@Address,@Phoneno,@Hrs,@Certification,@Rating,@Passowrd)";
+                    int status = 0;
+                string query = "Insert into Pilot(Emailid,Name,Gender,Dob,Address,Phoneno,Hrs,Certification,Rating,Passowrd,status)values(@Emailid,@Name,@Gender,@Dob,@Address,@Phoneno,@Hrs,@Certification,@Rating,@Passowrd,@status)";
                 SqlCommand com = new SqlCommand(query, con);
                 com.Parameters.AddWithValue("@Emailid", TextBox1.Text);
                 com.Parameters.AddWithValue("@Name", TextBox2.Text);
@@ -125,8 +143,27 @@ namespace Husky_Air
                 com.Parameters.AddWithValue("@Certification", TextBox7.Text);
                 com.Parameters.AddWithValue("@Rating", TextBox8.Text);
                 com.Parameters.AddWithValue("@Passowrd", sb.ToString());
+                    com.Parameters.AddWithValue("@status",status);
                 com.ExecuteNonQuery();
-                Response.Write("Data Storted Successfully");
+
+
+
+                    MailMessage mail = new MailMessage(Label1.Text, TextBox1.Text);
+                    mail.Subject = "Pilot Registration";
+                    mail.Body = CreateBody(); /*"Username" + TextBox1.Text+"\nPassword"+ TextBox9.Text;*/
+
+                    mail.IsBodyHtml = true;
+                    SmtpClient smtp = new SmtpClient();
+                    smtp.Host = "smtp.gmail.com";
+                    smtp.EnableSsl = true;
+
+                    NetworkCredential networkcred = new NetworkCredential(Label1.Text, Label2.Text);
+                    smtp.UseDefaultCredentials = true;
+                    smtp.Credentials = networkcred;
+                    smtp.Port = 587;
+                    smtp.Send(mail);
+                    Response.Write("Registered");
+                    Response.Write("Data Storted Successfully");
                 con.Close();
             }
             }
@@ -134,15 +171,7 @@ namespace Husky_Air
 
         }
 
-        protected void ImageButton1_Click(object sender, ImageClickEventArgs e)
-        {
-            if (Calendar1.Visible)
-            {
-                Calendar1.Visible = false;
-            }
-            else
-                Calendar1.Visible = true;
-        }
+     
 
         protected void DropDownList1_SelectedIndexChanged(object sender, EventArgs e)
         {

@@ -10,7 +10,10 @@ using System.Configuration;
 
 using System.Security.Cryptography;
 using System.Text;
-
+using System.Net;
+using System.Net.Mail;
+using System.IO;
+using System.Net.Mime;
 
 namespace Husky_Air
 {
@@ -22,7 +25,7 @@ namespace Husky_Air
             {
                 LoadMonths();
                 LoadYears();
-                Calendar1.Visible = false;
+                Calendar1.Visible = true;
             }
             else
             {
@@ -60,6 +63,21 @@ namespace Husky_Air
             DropDownList1.DataBind();
         }
 
+        private string CreateBody()
+        {
+           
+            string body = string.Empty;
+            using (StreamReader reader = new StreamReader(Server.MapPath("~/EmailTemplate.html")))
+            {
+                body = reader.ReadToEnd();
+            }
+            body = body.Replace("{Username}", TextBox3.Text);
+            body = body.Replace("{Password}", TextBox7.Text);
+            body = body.Replace("{User}", TextBox1.Text);
+            return body;
+
+        }
+
         protected void Button1_Click(object sender, EventArgs e)
         {
             string Gender = string.Empty;
@@ -95,35 +113,54 @@ namespace Husky_Air
 
             }
 
-
+            int temp = 0;
             SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["HuskyAirConnectionString"].ConnectionString);
             con.Open();
-            string query = "Insert into Patient(Name,Gender,Emailid,Dob,Address,Phoneno,Password)values(@Name,@Gender,@Emailid,@Dob,@Address,@Phoneno,@Password)";
-            SqlCommand com = new SqlCommand(query,con);
-            com.Parameters.AddWithValue("@Name",TextBox1.Text);
-            com.Parameters.AddWithValue("@Gender",Gender);
-            com.Parameters.AddWithValue("@Emailid",TextBox3.Text);
-            com.Parameters.AddWithValue("@dob",TextBox4.Text);
-            com.Parameters.AddWithValue("@Address",TextBox5.Text);
-            com.Parameters.AddWithValue("@Phoneno",TextBox6.Text);
-            com.Parameters.AddWithValue("@Password",sb.ToString());
-            com.ExecuteNonQuery();
-            Response.Write("Data stored successfully");
-
- 
-            
-            con.Close();
-        }
-
-        protected void ImageButton1_Click(object sender, ImageClickEventArgs e)
-        {
-            if (Calendar1.Visible)
+            string count = "Select count(*) from Patient where Emailid='"+TextBox3.Text+"'";
+            SqlCommand comm = new SqlCommand(count,con);
+            int num = Convert.ToInt32(comm.ExecuteScalar().ToString());
+            if (num != 0)
             {
-                Calendar1.Visible = false;
+                Response.Write("Patient already Registered");
             }
             else
-                Calendar1.Visible = true;
+            {
+
+                string query = "Insert into Patient(Name,Gender,Emailid,Dob,Address,Phoneno,Password,status)values(@Name,@Gender,@Emailid,@Dob,@Address,@Phoneno,@Password,@status)";
+                SqlCommand com = new SqlCommand(query, con);
+                com.Parameters.AddWithValue("@Name", TextBox1.Text);
+                com.Parameters.AddWithValue("@Gender", Gender);
+                com.Parameters.AddWithValue("@Emailid", TextBox3.Text);
+                com.Parameters.AddWithValue("@dob", TextBox4.Text);
+                com.Parameters.AddWithValue("@Address", TextBox5.Text);
+                com.Parameters.AddWithValue("@Phoneno", TextBox6.Text);
+                com.Parameters.AddWithValue("@Password", sb.ToString());
+                com.Parameters.AddWithValue("@status", temp);
+                com.ExecuteNonQuery();
+
+
+                MailMessage mail = new MailMessage(Label1.Text, TextBox3.Text);
+                mail.Subject = "Patient Registration";
+                mail.Body = CreateBody();
+
+                mail.IsBodyHtml = true;
+                SmtpClient smtp = new SmtpClient();
+                smtp.Host = "smtp.gmail.com";
+                smtp.EnableSsl = true;
+
+                NetworkCredential networkcred = new NetworkCredential(Label1.Text, Label2.Text);
+                smtp.UseDefaultCredentials = true;
+                smtp.Credentials = networkcred;
+                smtp.Port = 587;
+                smtp.Send(mail);
+                Response.Write("Registered");
+                Response.Write("Data Storted Successfully");
+
+                con.Close();
+            }
         }
+
+      
 
         protected void DropDownList1_SelectedIndexChanged(object sender, EventArgs e)
         {

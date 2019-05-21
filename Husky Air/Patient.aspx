@@ -5,20 +5,47 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
-    <style type="text/css">
-        .auto-style1 {
-            width: 100%;
-        }
-        .auto-style2 {
-            width: 719px;
-        }
-        .auto-style3 {
-            width: 719px;
-            text-align: right;
-        }
-    </style>
+    <style>
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: #111;
+}
+
+.active {
+  background-color: #4CAF50;
+}
+</style>
 </head>
 <body>
+
+     <ul>
+  
+     <li> <a href="Index.aspx">Home</a></li>
+      <li><a href="Stats.aspx">Flight Stats</a></li>
+     
+    </ul>
+
+
+    <h1>Patient Register</h1>
     <form id="form1" runat="server">
         <div>
         </div>
@@ -51,7 +78,6 @@
                     </asp:DropDownList>
                     <asp:DropDownList ID="DropDownList2" runat="server" AutoPostBack="True" OnSelectedIndexChanged="DropDownList2_SelectedIndexChanged">
                     </asp:DropDownList>
-                    <asp:ImageButton ID="ImageButton1" runat="server" Height="26px" ImageUrl="~/Image/calendar.jpg" OnClick="ImageButton1_Click" />
                     <asp:TextBox ID="TextBox4" runat="server"></asp:TextBox>
                     <br />
                     <asp:Calendar ID="Calendar1" runat="server" BackColor="#FFFFCC" BorderColor="#FFCC66" BorderWidth="1px" DayNameFormat="Shortest" Font-Names="Verdana" Font-Size="8pt" ForeColor="#663399" Height="200px" OnSelectionChanged="Calendar1_SelectionChanged" ShowGridLines="True" Width="220px">
@@ -69,12 +95,14 @@
                 <td class="auto-style3">Address</td>
                 <td>
                     <asp:TextBox ID="TextBox5" runat="server"></asp:TextBox>
+                    <asp:Label ID="Label1" runat="server" Text="princeaugustine95@gmail.com" Visible="False"></asp:Label>
                 </td>
             </tr>
             <tr>
                 <td class="auto-style3">Phoneno</td>
                 <td>
                     <asp:TextBox ID="TextBox6" runat="server"></asp:TextBox>
+                    <asp:Label ID="Label2" runat="server" Text="96prince@96" Visible="False"></asp:Label>
                 </td>
             </tr>
             <tr>
@@ -95,10 +123,11 @@
             <tr>
                 <td class="auto-style2">&nbsp;</td>
                 <td>
-                    <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Submit" />
+                    <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Submit" style="height: 29px" />
                 </td>
             </tr>
         </table>
     </form>
+    <center><a href="PatientLogin.aspx">Click here to Login</a></center>
 </body>
 </html>

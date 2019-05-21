@@ -10,6 +10,10 @@ using System.Data;
 using System.Security.Cryptography;
 using System.Text;
 
+using System.Net;
+using System.Net.Mail;
+using System.IO;
+
 namespace Husky_Air
 {
     public partial class Doctor : System.Web.UI.Page
@@ -42,6 +46,20 @@ namespace Husky_Air
             DropDownList1.DataTextField = "Name";
             DropDownList1.DataValueField = "Number";
             DropDownList1.DataBind();
+        }
+
+        private string CreateBody()
+        {
+            string body = string.Empty;
+            using (StreamReader reader = new StreamReader(Server.MapPath("~/EmailTemplate.html")))
+            {
+                body = reader.ReadToEnd();
+            }
+            body = body.Replace("{Username}", TextBox2.Text);
+            body = body.Replace("{Password}", TextBox9.Text);
+            body = body.Replace("{User}", TextBox8.Text);
+            return body;
+
         }
 
         protected void Button1_Click(object sender, EventArgs e)
@@ -91,7 +109,8 @@ namespace Husky_Air
             }
             else
             {
-                string query = "Insert into Doctor(Name,Gender,Emailid,Dob,Speciality,Address,Phoneno,Password)values(@Name,@Gender,@Emailid,@Dob,@Speciality,@Address,@Phoneno,@Password)";
+                int status = 0;
+                string query = "Insert into Doctor(Name,Gender,Emailid,Dob,Speciality,Address,Phoneno,Password,status)values(@Name,@Gender,@Emailid,@Dob,@Speciality,@Address,@Phoneno,@Password,@status)";
                 SqlCommand com = new SqlCommand(query, con);
                 com.Parameters.AddWithValue("@Name", TextBox1.Text);
                 com.Parameters.AddWithValue("@Gender", Gender);
@@ -101,8 +120,29 @@ namespace Husky_Air
                 com.Parameters.AddWithValue("@Address", Address);
                 com.Parameters.AddWithValue("@Phoneno", TextBox7.Text);
                 com.Parameters.AddWithValue("@Password", sb.ToString());
+                com.Parameters.AddWithValue("@status",status);
                 com.ExecuteNonQuery();
-                Response.Write("Data stored successfully");
+
+                MailMessage mail = new MailMessage(Label1.Text, TextBox2.Text);
+                mail.Subject = "Doctor Registration";
+                mail.Body = "Username" + TextBox2.Text + "\nPassword" + TextBox8.Text;
+
+                mail.IsBodyHtml = true;
+                SmtpClient smtp = new SmtpClient();
+                smtp.Host = "smtp.gmail.com";
+                smtp.EnableSsl = true;
+
+                NetworkCredential networkcred = new NetworkCredential(Label1.Text, Label2.Text);
+                smtp.UseDefaultCredentials = true;
+                smtp.Credentials = networkcred;
+                smtp.Port = 587;
+                smtp.Send(mail);
+                Response.Write("Registered");
+                Response.Write("Data Storted Successfully");
+
+
+
+                
                 con.Close();
             }
 

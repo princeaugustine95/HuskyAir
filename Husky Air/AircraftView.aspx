@@ -4,25 +4,63 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title></title>
-    <style type="text/css">
+    <style>
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: #111;
+}
+
+.active {
+  background-color: #4CAF50;
+}
         .auto-style1 {
-            width: 100%;
+            color: #000066;
         }
         .auto-style2 {
-            width: 694px;
-        }
-        .auto-style3 {
-            width: 694px;
-            text-align: right;
+            color: #339933;
         }
     </style>
 </head>
 <body>
+
+ <ul>
+  
+     <li> <a href="Admin.aspx">Home</a></li>
+      <li><a href="Stats.aspx">Flight Stats</a></li>
+     
+    </ul>
+ 
+
+
+
+
+
+
+
+    <center><h1>Aircraft Registration</h1></center>
     <form id="form1" runat="server">
         <div>
         </div>
-        <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" DataKeyNames="id" DataSourceID="SqlDataSource1" CellPadding="4" ForeColor="#333333" GridLines="None" OnSelectedIndexChanged="GridView1_SelectedIndexChanged" Width="892px">
+        <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" DataKeyNames="id" DataSourceID="SqlDataSource1" CellPadding="4" ForeColor="#333333" GridLines="None" OnSelectedIndexChanged="GridView1_SelectedIndexChanged" Width="1228px" Height="275px">
             <AlternatingRowStyle BackColor="White" />
             <Columns>
                 <asp:CommandField ShowSelectButton="True" />
@@ -41,65 +79,116 @@
             <SortedDescendingCellStyle BackColor="#FCF6C0" />
             <SortedDescendingHeaderStyle BackColor="#820000" />
         </asp:GridView>
-        <asp:SqlDataSource ID="SqlDataSource2" runat="server" ConnectionString="<%$ ConnectionStrings:Husky AirConnectionString1 %>" SelectCommand="SELECT [id] FROM [Services]"></asp:SqlDataSource>
+        <asp:SqlDataSource ID="SqlDataSource2" runat="server" ConnectionString="<%$ ConnectionStrings:HuskyAirConnectionString %>" SelectCommand="SELECT [id] FROM [Services]"></asp:SqlDataSource>
         <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:HuskyAirConnectionString %>" SelectCommand="SELECT * FROM [Aircraft1]"></asp:SqlDataSource>
+        <asp:SqlDataSource ID="SqlDataSource4" runat="server" ConnectionString="<%$ ConnectionStrings:HuskyAirConnectionString %>" SelectCommand="SELECT [id] FROM [Services]"></asp:SqlDataSource>
+        <asp:SqlDataSource ID="SqlDataSource3" runat="server" ConnectionString="<%$ ConnectionStrings:HuskyAirConnectionString2 %>" SelectCommand="SELECT [Emailid] FROM [Pilot]"></asp:SqlDataSource>
         <p>
             <table class="auto-style1">
                 <tr>
-                    <td class="auto-style3">Name </td>
-                    <td>
-                        <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
-                        <asp:TextBox ID="TextBox7" runat="server" Visible="False"></asp:TextBox>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="auto-style3">Order id</td>
-                    <td>
-                        <asp:DropDownList ID="DropDownList1" runat="server" AutoPostBack="True" DataSourceID="SqlDataSource2" DataTextField="id" DataValueField="id" OnSelectedIndexChanged="DropDownList1_SelectedIndexChanged">
+                    <td class="auto-style4">Order ID</td>
+                    <td class="auto-style5">
+                        <asp:DropDownList ID="DropDownList1" runat="server" AutoPostBack="True" DataSourceID="SqlDataSource4" DataTextField="id" DataValueField="id" OnSelectedIndexChanged="DropDownList1_SelectedIndexChanged">
                         </asp:DropDownList>
                     </td>
                 </tr>
                 <tr>
-                    <td class="auto-style3">Date of Journey </td>
-                    <td>
+                    <td class="auto-style4">Aircraft </td>
+                    <td class="auto-style5">
+                        <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="auto-style4">Aircraft ID</td>
+                    <td class="auto-style5">
+                        <asp:TextBox ID="TextBox10" runat="server"></asp:TextBox>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="auto-style4">Engine</td>
+                    <td class="auto-style5">
+                        <asp:TextBox ID="TextBox7" runat="server"></asp:TextBox>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="auto-style4">Type</td>
+                    <td class="auto-style5">
+                        <asp:TextBox ID="TextBox9" runat="server"></asp:TextBox>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="auto-style4">Date of Journey</td>
+                    <td class="auto-style5">
                         <asp:TextBox ID="TextBox2" runat="server"></asp:TextBox>
+                        </td>
+                </tr>
+                <tr>
+                    <td class="auto-style4">&nbsp;</td>
+                    <td class="auto-style5">
+                        <asp:Calendar ID="Calendar1" runat="server" BackColor="#FFFFCC" BorderColor="#FFCC66" BorderWidth="1px" DayNameFormat="Shortest" Font-Names="Verdana" Font-Size="8pt" ForeColor="#663399" Height="200px" OnSelectionChanged="Calendar1_SelectionChanged" ShowGridLines="True" Width="220px" OnDayRender="Calendar1_DayRender">
+                            <DayHeaderStyle BackColor="#FFCC66" Font-Bold="True" Height="1px" />
+                            <NextPrevStyle Font-Size="9pt" ForeColor="#FFFFCC" />
+                            <OtherMonthDayStyle ForeColor="#CC9966" />
+                            <SelectedDayStyle BackColor="#CCCCFF" Font-Bold="True" />
+                            <SelectorStyle BackColor="#FFCC66" />
+                            <TitleStyle BackColor="#990000" Font-Bold="True" Font-Size="9pt" ForeColor="#FFFFCC" />
+                            <TodayDayStyle BackColor="#FFCC66" ForeColor="White" />
+                        </asp:Calendar>
                     </td>
                 </tr>
                 <tr>
-                    <td class="auto-style3">Time </td>
-                    <td>
+                    <td class="auto-style4">
+                        <asp:Label ID="Label7" runat="server" CssClass="auto-style2" Text="Requested Date by Client"></asp:Label>
+                    </td>
+                    <td class="auto-style5">
+                        <asp:Label ID="Label8" runat="server" CssClass="auto-style2" Text="Label"></asp:Label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="auto-style4">Time </td>
+                    <td class="auto-style5">
                         <asp:TextBox ID="TextBox3" runat="server"></asp:TextBox>
+                        <asp:Label ID="Label5" runat="server" CssClass="auto-style2" Text="Note:Specify the time in 24 hour format.For Example:7:48,19:25"></asp:Label>
                     </td>
                 </tr>
                 <tr>
-                    <td class="auto-style3">Source </td>
-                    <td>
+                    <td class="auto-style4">Source </td>
+                    <td class="auto-style5">
                         <asp:TextBox ID="TextBox4" runat="server"></asp:TextBox>
                     </td>
                 </tr>
                 <tr>
-                    <td class="auto-style3">Destination</td>
-                    <td>
+                    <td class="auto-style4">Destination</td>
+                    <td class="auto-style5">
                         <asp:TextBox ID="TextBox5" runat="server"></asp:TextBox>
                     </td>
                 </tr>
                 <tr>
-                    <td class="auto-style3">Email id </td>
-                    <td>
+                    <td class="auto-style4">Pilot</td>
+                    <td class="auto-style5">
+                        <asp:DropDownList ID="DropDownList2" runat="server" DataSourceID="SqlDataSource3" DataTextField="Emailid" DataValueField="Emailid">
+                        </asp:DropDownList>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="auto-style4">Email id </td>
+                    <td class="auto-style5">
                         <asp:TextBox ID="TextBox6" runat="server"></asp:TextBox>
                         <asp:Label ID="Label1" runat="server" Text="princeaugustine95@gmail.com" Visible="False"></asp:Label>
                         <asp:Label ID="Label2" runat="server" Text="96prince@96" Visible="False"></asp:Label>
                     </td>
                 </tr>
                 <tr>
-                    <td class="auto-style2">&nbsp;</td>
-                    <td>
+                    <td class="auto-style4">&nbsp;</td>
+                    <td class="auto-style5">
                         <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Submit" />
+                        <asp:Label ID="Label3" runat="server" Text="Label" Visible="False"></asp:Label>
+                        <asp:Label ID="Label4" runat="server" Text="Label" Visible="False"></asp:Label>
                     </td>
                 </tr>
                 <tr>
-                    <td class="auto-style2">&nbsp;</td>
-                    <td>
+                    <td class="auto-style4">&nbsp;</td>
+                    <td class="auto-style5">
                         &nbsp;</td>
                 </tr>
             </table>

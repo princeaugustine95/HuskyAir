@@ -10,7 +10,11 @@
     <form id="form1" runat="server">
         <div>
         </div>
-        <asp:GridView ID="GridView1" runat="server">
+        <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" DataKeyNames="id" DataSourceID="SqlDataSource1">
+            <Columns>
+                <asp:BoundField DataField="id" HeaderText="id" ReadOnly="True" SortExpression="id" />
+                <asp:BoundField DataField="Weight" HeaderText="Weight" SortExpression="Weight" />
+            </Columns>
         </asp:GridView>
         <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:HuskyAirConnectionString %>" SelectCommand="SELECT * FROM [Cargo]"></asp:SqlDataSource>
     </form>
